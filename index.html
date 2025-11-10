@@ -1,0 +1,180 @@
+<!DOCTYPE html> 
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<title>¿Me perdonas? :(</title>
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        text-align: center;
+        background-color: #5496bf;
+        margin: 0;
+        padding: 0;
+    }
+
+    img {
+        width: 250px;
+        margin-top: 10px;
+        margin-bottom: 0;
+    }
+
+    h2 {
+        font-size: 28px;
+        color: white;
+        min-height: 60px;
+        margin-bottom: 0; /* ✅ Quitado espacio feo */
+        padding: 0 20px;
+    }
+
+    #botones {
+        margin-top: 5px; /* ✅ Pegaditos a la imagen */
+        display: flex;
+        justify-content: center;
+        position: relative;
+    }
+
+    button {
+        font-size: 20px;
+        padding: 10px 25px;
+        border-radius: 12px;
+        border: none;
+        cursor: pointer;
+        margin: 10px;
+    }
+
+    #yesBtn { 
+        background-color: #ff66a3; 
+        transition: transform 0.3s;
+        position: relative;
+    }
+
+    #noBtn { 
+        background-color: #444; 
+        color: white;
+        position: relative;
+        transition: all 0.3s;
+    }
+</style>
+</head>
+
+<body>
+
+<h2 id="texto"></h2>
+<img id="michi" src="michi1.jpeg" alt="michi triste">
+
+<div id="botones">
+    <button id="yesBtn" onclick="aceptar()">Sí</button>
+    <button id="noBtn" onclick="negar()">No</button>
+</div>
+
+<script>
+let paso = 1;
+
+const mensajes = [
+    "¿Me perdonas? :(",
+    "¿No puedes perdonarme?",
+    "Ándale perdóname",
+    "No seas malito y perdóname",
+    "Mi intención no era hacerte sentir mal, perdóname",
+    "Yo te quiero mucho, xfa perdóname",
+    "Por favor, piénsalo",
+    "No te quería lastimar, lo siento mucho",
+    "No quiero estar así contigo, perdóname",
+    "Samu perdóname",
+    "SAMUUUU XFA",
+    "Sino me perdonas estaré muy triste",
+    "¿Me perdonas? No me estás dejando otra opción..",
+    "Jojojo ahora sí me tienes que perdonar",
+    "Gracias por perdonarme tonto, prometo mejorar, tamo"
+];
+
+const imgs = [
+    "michi1.jpeg","michi2.jpeg","michi3.jpeg","michi4.jpeg","michi5.jpeg",
+    "michi6.jpeg","michi7.jpeg","michi8.jpeg","michi9.jpeg","michi10.jpeg",
+    "michi11.jpeg","michi12.jpeg","michi13.jpeg","michi14.jpeg","michi15.jpeg"
+];
+
+document.getElementById("texto").textContent = mensajes[0];
+
+function centrarBotones() {
+    const noBtn = document.getElementById("noBtn");
+    const yesBtn = document.getElementById("yesBtn");
+
+    noBtn.style.position = "relative";
+    yesBtn.style.position = "relative";
+    noBtn.style.left = "0";
+    noBtn.style.top = "0";
+}
+
+function negar() {
+    paso++;
+    if (paso > 15) return;
+
+    document.getElementById("texto").textContent = mensajes[paso - 1];
+    document.getElementById("michi").src = imgs[paso - 1];
+
+    if (paso <= 3) centrarBotones();
+
+    if (paso >= 4 && paso <= 8) moverBoton();
+
+    if (paso >= 9 && paso <= 13) {
+        centrarBotones();
+        let noBtn = document.getElementById("noBtn");
+        let yesBtn = document.getElementById("yesBtn");
+        noBtn.style.transform = `scale(${1 - (paso - 8) * 0.15})`;
+        yesBtn.style.transform = `scale(${1 + (paso - 8) * 0.25})`;
+    }
+
+    if (paso == 14) {
+        document.getElementById("noBtn").style.display = "none";
+        document.getElementById("yesBtn").style.transform = "scale(2)";
+    }
+
+    if (paso == 15) aceptar();
+}
+
+function moverBoton() {
+    const btn = document.getElementById("noBtn");
+
+    const maxX = window.innerWidth * 0.6;
+    const maxY = window.innerHeight * 0.45;
+    const minX = window.innerWidth * 0.2;
+    const minY = window.innerHeight * 0.25;
+
+    btn.style.position = "absolute";
+    btn.style.left = minX + Math.random() * (maxX - minX) + "px";
+    btn.style.top = minY + Math.random() * (maxY - minY) + "px";
+}
+
+function aceptar() {
+    confetti();
+    document.getElementById("texto").textContent = "Gracias por perdonarme tonto, prometo mejorar, tamo";
+    document.getElementById("botones").style.display = "none";
+}
+
+function confetti() {
+    for (let i = 0; i < 150; i++) {
+        let particle = document.createElement("div");
+        particle.style.position = "fixed";
+        particle.style.top = "-10px";
+        particle.style.left = Math.random() * window.innerWidth + "px";
+        particle.style.width = "8px";
+        particle.style.height = "8px";
+        particle.style.backgroundColor = "hsl(" + Math.random() * 360 + ",100%,70%)";
+        particle.style.borderRadius = "50%";
+        particle.style.animation = "fall 3s linear forwards";
+        document.body.appendChild(particle);
+        setTimeout(() => particle.remove(), 3000);
+    }
+}
+
+const style = document.createElement("style");
+style.textContent = `
+@keyframes fall {
+    to { transform: translateY(100vh); opacity: 0; }
+}`;
+document.head.appendChild(style);
+</script>
+
+</body>
+</html>
